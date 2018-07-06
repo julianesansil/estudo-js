@@ -1,0 +1,25 @@
+{
+  "name": "estudo-js",
+  "version": "1.0.0",
+  "description": "\"Gerenciador de cartões\"",
+  "main": "index.js",
+  "scripts": {
+    "watch": "node_modules/.bin/babel src --out-dir dist --copy-files --watch --presets env",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julianesansil/estudo-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julianesansil/estudo-js/issues"
+  },
+  "homepage": "https://github.com/julianesansil/estudo-js#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jquery": "^3.3.1"
+  }
+}
