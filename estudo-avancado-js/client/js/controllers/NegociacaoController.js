@@ -9,16 +9,18 @@ class NegociacaoController {
         this._inputData = $("#data");
         this._inputQuantidade = $("#quantidade");
         this._inputValor = $("#valor");
-        
-        this._pMensagem = $("#mensagem");
-        this._tabelaNegociacao = $("#tabelaNegociacao");
 
-        this._listaNegociacoes = new ListaNegociacoes();        
-        this._negociacoesView = new NegociacoesView(this._tabelaNegociacao);
-        this._negociacoesView.atualizar(this._listaNegociacoes);
+        this._listaNegociacoes = new Bind(new ListaNegociacoes(), new NegociacoesView($("#tabelaNegociacao")), "adicionar", "apagar", "ordenar", "inverterOrdem");
+        this._mensagem = new Bind(new Mensagem(), new MensagemView($("#mensagem")), "texto");
 
-        this._mensagem = new Mensagem();
-        this._mensagemView = new MensagemView(this._pMensagem);
+        // this._listaNegociacoes = ProxyFactory.create(new ListaNegociacoes(), ["adicionar", "apagar"],
+        //     (model) => {
+
+        //         this._negociacoesView.atualizar(model)
+        //     }
+        // );
+
+        this._ordemAtual = "";
     }
 
     adicionar(event) {
@@ -32,12 +34,44 @@ class NegociacaoController {
         );
 
         this._listaNegociacoes.adicionar(negociacao);
-        this._negociacoesView.atualizar(this._listaNegociacoes);
-
-        this._mensagem.texto = "Negociação adicionada com sucesso! :)"
-        this._mensagemView.atualizar(this._mensagem);
-        
+        this._mensagem.texto = "Negociação adicionada com sucesso! ;)"
         this._limparFormulario();
+    }
+
+    apagar() {
+
+        this._listaNegociacoes.apagar();
+        this._mensagem.texto = "Negociações apagadas com sucesso... :)"
+    }
+
+    importarNegociacoes() {
+
+        let service = new NegociacaoService();
+
+        service.getNegociacoes()
+            .then(negociacoes => {
+
+                negociacoes.forEach(negociacao =>
+                    this._listaNegociacoes.adicionar(negociacao)
+                );
+
+                this._mensagem.texto = "Negociações importadas com sucesso. o//"
+            })
+            .catch(error => {
+
+                this._mensagem.texto = error;
+            });
+    }
+
+    ordenar(coluna) {
+
+        if (this._ordemAtual == coluna) {
+            this._listaNegociacoes.inverterOrdem();
+        } else {
+            this._listaNegociacoes.ordenar((a, b) => a[coluna] - b[coluna]);
+        }
+
+        this._ordemAtual = coluna;
     }
 
     _limparFormulario() {

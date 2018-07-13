@@ -8,7 +8,12 @@ class MensagemView extends View {
 
     template(mensagem) {
 
-        return `<p class="alert alert-info">${mensagem.texto}</p>`
+        if (mensagem.texto) {
+
+            return `<p class="alert alert-info">${mensagem.texto}</p>`
+        }
+
+        return null;
     }
 
 }
